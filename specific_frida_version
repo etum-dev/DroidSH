@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+function setupdirs(){
+	mkdir -p frida_versions/$1
+	pushd "frida_versions/$1"
+	#mv "../../frida-server-$1-$arch.xz" .
+	#xz -d "*.xz"
+}
+
+# TODO add check for desired arch. OSX users might want arm for example
+arch="android-x86_64" 
+
+if [[ -z "$1" ]]; then
+	echo "Usage: $0 <version, eg 13.3.7>"
+	exit 1
+fi
+
+echo "Setting up frida version $1"
+#check that the version exists
+#curl https://api.github.com/repos/frida/frida/releases | jq | grep frida-server-$1-$arch
+
+#download_url=$(
+download_url=$(curl -s "https://api.github.com/repos/frida/frida/releases/tags/$1" | jq -r ".assets[] | select (.name == \"frida-server-$1-$arch.xz\") | .browser_download_url")
+echo $download_url
+
+if [[ -z "$download_url" || "$download_url" == "null" ]]; then
+    echo "Error: frida-server-$1-$arch.xz not found"
+    exit 1
+fi
+
+echo "Downloading from: $download_url"
+curl -LO "$download_url"
+
+setupdirs
+# set up directory and venv for the specific version
