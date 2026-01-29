@@ -1,0 +1,13 @@
+if [[ "$#" -ne 1 ]]
+then
+	echo "enter pkg name"
+	exit 1
+fi
+PKGNAME="$1"
+APP_PID=$(adb shell pidof -s "$PKGNAME")
+if [[ ! -z "$APP_PID" ]]
+then
+	adb logcat -b all -v color --pid="$APP_PID"
+else
+	echo "No PID for $PKGNAME"
+fi
