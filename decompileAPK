@@ -1,0 +1,14 @@
+APKFILE=""
+
+# this should go into the check_deps script but rn idc
+if ! command -v apktool >/dev/null 2>&1
+  then
+    echo "no peaches :( add apktool to path"
+    exit 1
+fi
+
+decompileAPK() {
+  java -jar apktool d -s $APKFILE
+  jadx --no-res --threads-cont 12 --deobf --deobf-min 3 --deobf-use-sourcename --show-bad-code --escape-unicode --output-dir-src "/tmp" $APKFILE
+  
+}
