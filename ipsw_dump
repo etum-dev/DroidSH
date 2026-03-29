@@ -1,0 +1,12 @@
+
+# in apps root folder (from Payloads), run this to get class dumps, swift demangle, on all the identified binaries
+
+binaries=$(find . -type f -exec sh -c 'case $( file -bi "$1" ) in (*/x-mach-binary*) exit 0; esac; exit 1' sh {} \; -print)
+for b in $binaries; do
+        echo "checking $b"
+        outdir="/tmp/dump_$(basename "$b")"
+        mkdir -p "$outdir"
+        ipsw class-dump $b --headers -o /tmp/dump_$(basename $b);
+        ipsw swift-dump $b | swift-demangle --simplified > /tmp/swift_demangled_$(basename $b)
+done;
+
