@@ -33,7 +33,7 @@ do
     echo "action=[$action]"
     echo "file=[$file]"
     echo "path=[$path]"
-    if [ "$a" = "FSE_CREATE_FILE" ]; then
+    if [ "$action" = "FSE_CREATE_FILE" ]; then
         echo "file made"
     fi
 done
