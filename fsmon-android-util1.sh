@@ -26,14 +26,11 @@ fsmon="./fsmon-and-arm64"
 
 echo "Monitoring: $ARG"
 
-"$fsmon" /data/data/*"$ARG"* |
+"$fsmon" -b "/sdcard/fsmontest/" /data/data/"$ARG"/ |
 while read action pid file path
 do
     echo "pid=[$pid]"
     echo "action=[$action]"
     echo "file=[$file]"
     echo "path=[$path]"
-    if [ "$action" = "FSE_CREATE_FILE" ]; then
-        echo "file made"
-    fi
 done
